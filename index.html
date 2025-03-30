@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalkulator Ilmiah</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="calculator">
+      <input type="text" class="display" id="display" readonly />
+      <div class="buttons">
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="appendOperator('**')">^</button>
+        <button onclick="calculateSqrt()">√</button>
+        <button onclick="appendOperator('/')">/</button>
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendOperator('*')">*</button>
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendOperator('-')">-</button>
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendOperator('+')">+</button>
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculateResult()" class="equal">=</button>
+        <button onclick="printResult()" class="print">🖨 Print</button>
+        <button onclick="calculateTrig('sin')">sin</button>
+        <button onclick="calculateTrig('cos')">cos</button>
+        <button onclick="calculateTrig('tan')">tan</button>
+        <button onclick="calculateLog()">log</button>
+        <button onclick="calculateExp()">exp</button>
+        <button onclick="appendValue('Math.PI')">π</button>
+        <button onclick="appendValue('Math.E')">e</button>
+        <button onclick="backspace()">⌫</button>
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script>
+      function printResult() {
+        let result = document.getElementById("display").value;
+        if (result !== "") {
+          let printWindow = window.open("", "", "width=400,height=300");
+          printWindow.document.write(
+            "<html><head><title>Hasil Perhitungan</title></head><body>"
+          );
+          printWindow.document.write("<h2>Hasil Perhitungan</h2>");
+          printWindow.document.write(
+            '<p style="font-size: 24px;">' + result + "</p>"
+          );
+          printWindow.document.write("</body></html>");
+          printWindow.document.close();
+          printWindow.print();
+        } else {
+          alert("Tidak ada hasil untuk dicetak!");
+        }
+      }
+      function clearDisplay() {
+        document.getElementById("display").value = "";
+      }
+      function appendValue(value) {
+        document.getElementById("display").value += value;
+      }
+      function appendOperator(operator) {
+        let display = document.getElementById("display");
+        if (display.value !== "" && !isNaN(display.value.slice(-1))) {
+          display.value += operator;
+        }
+      }
+      function calculateSqrt() {
+        let display = document.getElementById("display");
+        if (display.value !== "") {
+          display.value = Math.sqrt(parseFloat(display.value));
+        }
+      }
+      function calculateTrig(func) {
+        let display = document.getElementById("display");
+        if (display.value !== "") {
+          let angle = parseFloat(display.value);
+          display.value = Math[func](angle * (Math.PI / 180));
+        }
+      }
+      function calculateLog() {
+        let display = document.getElementById("display");
+        if (display.value !== "") {
+          display.value = Math.log10(parseFloat(display.value));
+        }
+      }
+      function calculateExp() {
+        let display = document.getElementById("display");
+        if (display.value !== "") {
+          display.value = Math.exp(parseFloat(display.value));
+        }
+      }
+      function calculateResult() {
+        try {
+          let expression = document.getElementById("display").value;
+          document.getElementById("display").value = eval(expression);
+        } catch (e) {
+          alert("Input tidak valid");
+          clearDisplay();
+        }
+      }
+      function backspace() {
+        let display = document.getElementById("display");
+        display.value = display.value.slice(0, -1);
+      }
+    </script>
+  </body>
+</html>
